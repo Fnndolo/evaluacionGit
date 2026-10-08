@@ -1,0 +1,1 @@
+// ms-afiliados/config: configuracion y variables de entorno del microservicio de afiliados y beneficiarios

@@ -1,0 +1,1 @@
+// ms-facturacion/config: configuracion y variables de entorno del microservicio de facturacion (copagos y cuentas medicas)

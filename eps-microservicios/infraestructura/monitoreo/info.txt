@@ -1,0 +1,1 @@
+// monitoreo: metricas, logs centralizados y trazas

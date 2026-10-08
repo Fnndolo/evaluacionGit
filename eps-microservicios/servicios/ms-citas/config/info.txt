@@ -1,0 +1,1 @@
+// ms-citas/config: configuracion y variables de entorno del microservicio de citas medicas (agendamiento)

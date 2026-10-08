@@ -1,0 +1,1 @@
+// ms-autenticacion/config: configuracion y variables de entorno del microservicio de autenticacion (usuarios, roles y tokens)

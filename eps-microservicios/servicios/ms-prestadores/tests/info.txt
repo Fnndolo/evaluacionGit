@@ -1,0 +1,1 @@
+// ms-prestadores/tests: pruebas unitarias y de integracion del microservicio de prestadores (red de IPS, sedes y medicos)

@@ -1,0 +1,1 @@
+// ms-medicamentos/config: configuracion y variables de entorno del microservicio de medicamentos (formulas y dispensacion)

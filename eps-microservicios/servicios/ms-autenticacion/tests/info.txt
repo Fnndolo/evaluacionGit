@@ -1,0 +1,1 @@
+// ms-autenticacion/tests: pruebas unitarias y de integracion del microservicio de autenticacion (usuarios, roles y tokens)
