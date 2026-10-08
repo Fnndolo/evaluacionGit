@@ -1,0 +1,91 @@
+@startuml arquitectura_eps
+' Arquitectura de microservicios para una EPS
+' Se puede renderizar en https://www.plantuml.com/plantuml o con la extension PlantUML de VS Code.
+
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam ArrowColor #4A4A4A
+skinparam rectangle {
+  BorderColor #1F3B4D
+}
+left to right direction
+
+package "Capa de clientes" {
+  actor "Afiliado" as afiliado
+  actor "Funcionario EPS" as funcionario
+  [Portal de afiliados\n(web y app movil)] as portalAf
+  [Portal administrativo] as portalAdm
+  [IPS y prestadores\n(sistemas externos)] as ips
+}
+
+[API Gateway\nenrutamiento, JWT,\nlimite de peticiones] as gateway #1F3B4D
+
+package "Microservicios de negocio" {
+  [ms-autenticacion] as auth
+  [ms-afiliados] as afil
+  [ms-prestadores] as prest
+  [ms-citas] as citas
+  [ms-autorizaciones] as autz
+  [ms-historia-clinica] as hc
+  [ms-medicamentos] as med
+  [ms-facturacion] as fact
+  [ms-notificaciones] as notif
+}
+
+package "Bases de datos (una por servicio)" {
+  database "BD usuarios" as dbAuth
+  database "BD afiliados" as dbAfil
+  database "BD prestadores" as dbPrest
+  database "BD citas" as dbCitas
+  database "BD autorizaciones" as dbAutz
+  database "BD historias" as dbHc
+  database "BD formulas" as dbMed
+  database "BD facturacion" as dbFact
+  database "BD notificaciones" as dbNotif
+}
+
+queue "Message Broker\n(RabbitMQ / Kafka)" as broker
+
+package "Infraestructura transversal" {
+  [Config Server] as config
+  [Service Discovery] as discovery
+  [Monitoreo y logs] as monitoreo
+}
+
+afiliado --> portalAf
+funcionario --> portalAdm
+portalAf --> gateway : HTTPS
+portalAdm --> gateway : HTTPS
+ips --> gateway : HTTPS
+
+gateway --> auth : REST
+gateway --> afil : REST
+gateway --> prest : REST
+gateway --> citas : REST
+gateway --> autz : REST
+gateway --> hc : REST
+gateway --> med : REST
+gateway --> fact : REST
+
+auth --> dbAuth
+afil --> dbAfil
+prest --> dbPrest
+citas --> dbCitas
+autz --> dbAutz
+hc --> dbHc
+med --> dbMed
+fact --> dbFact
+notif --> dbNotif
+
+citas ..> broker : CitaAgendada
+autz ..> broker : AutorizacionAprobada
+med ..> broker : FormulaEntregada
+fact ..> broker : PagoRegistrado
+broker ..> notif : consume eventos
+
+gateway ..> discovery : localiza servicios
+discovery ..> config
+discovery ..> monitoreo
+
+@enduml
